@@ -88,30 +88,34 @@ function [precision, success] = run_tracker(video, kernel_type, ~, show_visualiz
     %we were given the name of a single video to process.
 
     %get image file names, initial state, and ground truth for evaluation
-    base_path = '/Users/buzkent/Downloads/UAV123/data_seq/UAV123/';
-    fid   = fopen('/Users/buzkent/Downloads/UAV123/startFrames_UAV123.txt');
-    seqInfo = textscan(fid, '%d%d%s%s\n');
-    for i = 1:size(seqInfo{1},1)
-        video = seqInfo{4}{i};
-        seq = seqInfo{3}{i};
-        firstFrame = seqInfo{1}(i);
-        lastFrame = seqInfo{2}(i);
-        try
-            [img_files, pos, target_sz, ground_truth, video_path] = load_video_info(base_path, video, seq, firstFrame, lastFrame);
-
-            %call tracker function with all the relevant parameters
-            [positions,rect_results, fps(counter)] = tracker(video_path, img_files, pos, target_sz, ...
-                padding, kernel, lambda, output_sigma_factor, interp_factor, ...
-                cell_size, features, show_visualization,[]);
-            i
-            %calculate and show precision plot, as well as frames-per-second
-            [precision(counter,:),success(counter,:)] = precision_plot(positions, rect_results,ground_truth, video, 0);
-            counter = counter + 1;
-
-        catch err
-           err
-           continue;
-        end
+%     base_path = '/Users/buzkent/Downloads/UAV123/data_seq/UAV123/';
+    base_path = 'd:/baiduSyn/files/computerVision/videoTracking/tracker_release2/data/Benchmark/';
+    video = 'Bolt';
+%     fid   = fopen('/Users/buzkent/Downloads/UAV123/startFrames_UAV123.txt');
+%     fid   = fopen('d:/baiduSyn/files/computerVision/videoTracking/tracker_release2/data/Benchmark/Bolt/groundtruth_rect.txt');
+%     seqInfo = textscan(fid, '%d%d%s%s\n');
+    [img_files, pos, target_sz, ground_truth, video_path] = load_video_info_kcf(base_path, video);
+    counter = 1;
+%     for i = 1:size(seqInfo{1},1)
+    for i = 1:numel(img_files)
+        %         video = seqInfo{4}{i};
+        %         seq = seqInfo{3}{i};
+        %         firstFrame = seqInfo{1}(i);
+        %         lastFrame = seqInfo{2}(i);
+        
+        %             [img_files, pos, target_sz, ground_truth, video_path] = load_video_info(base_path, video, seq, firstFrame, lastFrame);
+        
+        %call tracker function with all the relevant parameters
+        %             [positions,rect_results, fps(counter)] = tracker(video_path, img_files, pos, target_sz, ...
+        %                 padding, kernel, lambda, output_sigma_factor, interp_factor, ...
+        %                 cell_size, features, show_visualization,[]);
+        [positions,rect_results, fps(counter)] = tracker(video_path, img_files{i}, pos, target_sz, ...
+            padding, kernel, lambda, output_sigma_factor, interp_factor, ...
+            cell_size, features, show_visualization,[]);
+        i
+        %calculate and show precision plot, as well as frames-per-second
+        %             [precision(counter,:),success(counter,:)] = precision_plot(positions, rect_results,ground_truth, video, 0);
+        counter = counter + 1;        
     end
-    save results2.mat precision success;
+%     save results2.mat precision success;
 end
