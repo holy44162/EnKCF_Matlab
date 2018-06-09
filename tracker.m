@@ -38,6 +38,7 @@ function [positions, rect_results, fps] = tracker(video_path, img_files, pos, ta
 %   revised by: Yang Li, August, 2014
 %   http://ihpdep.github.io
 % added by Holy for git test
+% added by Holy for git branch test
 
 addpath('./utility');
 temp = load('w2crs');
