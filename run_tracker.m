@@ -90,6 +90,7 @@ function [precision, success] = run_tracker(video, kernel_type, ~, show_visualiz
     %get image file names, initial state, and ground truth for evaluation
     base_path = '/Users/buzkent/Downloads/UAV123/data_seq/UAV123/';
     fid   = fopen('/Users/buzkent/Downloads/UAV123/startFrames_UAV123.txt');
+    
     seqInfo = textscan(fid, '%d%d%s%s\n');
     for i = 1:size(seqInfo{1},1)
         video = seqInfo{4}{i};
